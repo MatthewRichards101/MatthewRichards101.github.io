@@ -1,5 +1,6 @@
 import { About } from './components/About';
 import { Background } from './components/Background';
+import { BeliefQuote } from './components/BeliefQuote';
 import { Contact } from './components/Contact';
 import { CuriosityMap } from './components/CuriosityMap';
 import { Exploring } from './components/Exploring';
@@ -8,6 +9,7 @@ import { Hero } from './components/Hero';
 import { Journey } from './components/Journey';
 import { MotionProvider } from './components/MotionProvider';
 import { Nav } from './components/Nav';
+import { RecentlyBuilt } from './components/RecentlyBuilt';
 import { SectionDivider } from './components/SectionDivider';
 
 export default function Home() {
@@ -22,8 +24,11 @@ export default function Home() {
         <About />
         <SectionDivider />
         <Journey />
+        <BeliefQuote />
         <SectionDivider />
         <Exploring />
+        <SectionDivider />
+        <RecentlyBuilt />
         <SectionDivider />
         <CuriosityMap />
         <SectionDivider />
