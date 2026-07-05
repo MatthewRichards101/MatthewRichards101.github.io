@@ -60,10 +60,10 @@ function FlagshipCard() {
 
   return (
     <m.div
-      className="spotlight-card premium-panel relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 md:p-10"
+      className="spotlight-card flagship-border-glow premium-panel relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 md:p-10"
       variants={item}
       onMouseMove={handleMove}
-      whileHover={shouldReduceMotion ? undefined : { y: -6 }}
+      whileHover={shouldReduceMotion ? undefined : { y: -6, scale: 1.01 }}
       transition={{ duration: 0.3 }}
     >
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-violet-400/10 to-transparent" />
