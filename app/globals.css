@@ -170,6 +170,54 @@ body {
   }
 }
 
+/* Slowly rotating conic-gradient border used for the flagship project
+   card — the one card on the page allowed to feel a little more alive. */
+.flagship-border-glow {
+  position: relative;
+  isolation: isolate;
+}
+
+.flagship-border-glow::before {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--border-angle, 0deg),
+    rgba(125, 211, 252, 0.55),
+    rgba(139, 92, 246, 0.55),
+    rgba(250, 204, 21, 0.5),
+    rgba(125, 211, 252, 0.55)
+  );
+  opacity: 0.55;
+  animation: border-rotate 7s linear infinite;
+  transition: opacity 0.4s ease;
+}
+
+.flagship-border-glow:hover::before {
+  opacity: 1;
+}
+
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes border-rotate {
+  to {
+    --border-angle: 360deg;
+  }
+}
+
+/* Mini constellation used at the very end of the page, right before the
+   contact heading — the one footer "surprise" on the site. */
+.footer-constellation-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -185,6 +233,10 @@ body {
   }
 
   .drift-particle {
+    animation: none !important;
+  }
+
+  .flagship-border-glow::before {
     animation: none !important;
   }
 }
