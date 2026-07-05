@@ -12,6 +12,12 @@ const config: Config = {
         zinc: {
           950: '#09090b',
         },
+        brand: {
+          blue: '#3b82f6',
+          violet: '#8b5cf6',
+          cyan: '#22d3ee',
+          gold: '#facc15',
+        },
       },
       fontFamily: {
         sans: ['-apple-system', 'BlinkMacSystemFont', 'Inter', "'Segoe UI'", "'Helvetica Neue'", 'Arial', 'sans-serif'],
