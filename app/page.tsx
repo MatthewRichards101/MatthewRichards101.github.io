@@ -7,7 +7,7 @@ import {
   useReducedMotion,
   type Variants,
 } from 'framer-motion';
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 const container: Variants = {
   hidden: {},
@@ -27,136 +27,6 @@ const STAR_HORIZONTAL_SPREAD = 17;
 const STAR_VERTICAL_SPREAD = 29;
 const STAR_DELAY_INCREMENT = 0.8;
 const CURSOR_GLOW_OFFSET = 80;
-
-const storyMoments = [
-  {
-    era: 'Learning',
-    title: 'Questions before certainty',
-    description:
-      'The starting point has always been curiosity — following the threads behind how systems behave, where friction lives, and why certain experiences feel inevitable while others fall apart.',
-    accent: 'from-cyan-400/30 via-sky-500/20 to-transparent',
-  },
-  {
-    era: 'Manufacturing',
-    title: 'Precision shaped the mindset',
-    description:
-      'Pharmaceutical and medical-device environments made rigor non-negotiable. Process, compliance, and repeatability became foundations rather than constraints.',
-    accent: 'from-indigo-500/30 via-violet-500/15 to-transparent',
-  },
-  {
-    era: 'Cybersecurity',
-    title: 'Understanding failure paths',
-    description:
-      'Security sharpened the instinct to inspect surfaces less and assumptions more. The most useful systems are often the ones built to survive pressure gracefully.',
-    accent: 'from-violet-500/25 via-fuchsia-500/15 to-transparent',
-  },
-  {
-    era: 'AI',
-    title: 'Better questions, better leverage',
-    description:
-      'AI is most compelling as a thinking partner and force multiplier — a way to transform ambiguity into momentum through better prompts, experiments, and product decisions.',
-    accent: 'from-sky-400/20 via-cyan-400/15 to-transparent',
-  },
-  {
-    era: 'Blockchain',
-    title: 'Trust as a design material',
-    description:
-      'Distributed systems introduced a new design language around ownership, incentives, and credibility — ideas that continue to influence how digital products are imagined.',
-    accent: 'from-amber-300/20 via-orange-400/10 to-transparent',
-  },
-  {
-    era: 'Product Design',
-    title: 'Experiences people remember',
-    description:
-      'The through-line is building things that feel deliberate. Not just functional, but meaningful — clear systems with an emotional signature.',
-    accent: 'from-indigo-500/20 via-cyan-400/10 to-transparent',
-  },
-];
-
-const projects = [
-  {
-    name: 'Cosmic Outpost',
-    description:
-      'A digital product that began as an NFT concept and evolved into an interactive AI-assisted experience. Part creative experiment, part exploration into how digital ownership and AI can coexist in practical products.',
-    stack: ['Next.js', 'AI Workflows', 'Interactive UX'],
-    tags: ['Digital Product', 'AI', 'Interactive Experience'],
-    status: 'Ongoing',
-    featured: true,
-    liveUrl: 'https://cosmicoutposts.lovable.app',
-    githubUrl: 'https://github.com/MatthewRichards101?tab=repositories',
-    imageLabel: 'Orbital system diagram',
-  },
-  {
-    name: 'Personal Brand Systems',
-    description:
-      'Building the infrastructure behind a personal brand — from content pipelines to digital presence. An exercise in treating identity like a product worth engineering.',
-    stack: ['Next.js', 'Framer Motion', 'Brand Systems'],
-    tags: ['Strategy', 'Web', 'Automation'],
-    status: 'Active',
-    featured: false,
-    liveUrl: 'https://matthewrichards101.github.io',
-    githubUrl: 'https://github.com/MatthewRichards101/MatthewRichards101.github.io',
-    imageLabel: 'Blueprint exploration grid',
-  },
-];
-
-const timeline = [
-  {
-    company: 'Abbott',
-    role: 'Quality Systems',
-    skills: ['Quality', 'Compliance', 'Trust'],
-    description:
-      "Developed expertise in quality systems within a global medical device environment. Learned that trust isn't claimed — it's built through consistency, precision, and doing the invisible work right.",
-  },
-  {
-    company: 'Takeda',
-    role: 'Quality & Operations',
-    skills: ['Continuous Improvement', 'Attention to Detail', 'Process Management'],
-    description:
-      'Worked within pharmaceutical manufacturing standards where precision is non-negotiable. Quality became a mindset, not a department — and that perspective has shaped everything since.',
-  },
-  {
-    company: 'VXI',
-    role: 'Operations',
-    skills: ['Communication', 'Problem Solving', 'Customer Experience'],
-    description:
-      "Developed foundational communication and problem-solving skills working directly with people under pressure. A reminder that every system ultimately serves a human being — and that's worth designing for.",
-  },
-];
-
-const explorations = [
-  {
-    title: 'Artificial Intelligence',
-    insight:
-      "The most interesting part isn't the models — it's learning how to ask better questions.",
-  },
-  {
-    title: 'Blockchain',
-    insight: 'Trust as infrastructure. Still early, still fascinating.',
-  },
-  {
-    title: 'Web Experiences',
-    insight:
-      "The gap between what's possible and what's built is enormous. I'm interested in closing it.",
-  },
-  {
-    title: 'Cybersecurity',
-    insight:
-      "Understanding how systems break is the first step to building ones that don't.",
-  },
-  {
-    title: 'Digital Products',
-    insight: 'A good product is a solved problem that someone actually enjoys using.',
-  },
-  {
-    title: 'Financial Markets',
-    insight: 'Every market is a system. Systems have patterns. Patterns can be learned.',
-  },
-  {
-    title: 'Manufacturing Innovation',
-    insight: 'The most underrated intersection of technology and craftsmanship.',
-  },
-];
 
 const socialLinks = [
   {
