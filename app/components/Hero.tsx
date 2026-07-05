@@ -125,29 +125,34 @@ export function Hero() {
         animate="visible"
         style={shouldReduceMotion ? undefined : { opacity: parallaxOpacity, y: parallaxY }}
       >
-        <m.p className="mb-10 text-xs font-medium uppercase tracking-[0.35em] text-zinc-500" variants={item}>
+        <m.p className="mb-8 text-xs font-medium uppercase tracking-[0.35em] text-zinc-500" variants={item}>
           Matthew Richards
         </m.p>
 
-        <m.h1 className="mb-6 text-5xl font-bold leading-[1.02] tracking-tightest text-white sm:text-7xl md:text-8xl" variants={item}>
+        <m.h1
+          className="text-[3.75rem] font-bold leading-[0.92] tracking-tightest text-white sm:text-[6.5rem] md:text-[9rem] lg:text-[10.5rem]"
+          variants={item}
+        >
           <Keyword delay={0.1}>Curiosity</Keyword>
-          <br />
-          Creates{' '}
+        </m.h1>
+
+        <m.p
+          className="mx-auto mt-4 max-w-md text-base font-light tracking-wide text-zinc-400 md:text-lg"
+          variants={item}
+        >
+          creates{' '}
           <m.span
             className="inline-flex bg-gradient-to-r from-cyan-200 via-indigo-200 to-amber-100 bg-clip-text text-transparent"
             animate={shouldReduceMotion ? undefined : { backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
             transition={shouldReduceMotion ? undefined : { duration: 14, repeat: Infinity, ease: 'linear' }}
             style={{ backgroundSize: '180% 180%' }}
           >
-            <Keyword delay={0.2}>Momentum</Keyword>
+            momentum.
           </m.span>
-        </m.h1>
+        </m.p>
 
-        <m.p className="mx-auto mt-10 max-w-3xl text-lg font-light tracking-wide text-zinc-300 md:text-xl" variants={item}>
-          Building better <Keyword delay={0.35}>Systems</Keyword>. Creating memorable{' '}
-          <span className="text-zinc-500">
-            <Keyword delay={0.45}>Experiences</Keyword>.
-          </span>
+        <m.p className="mx-auto mt-20 max-w-xs text-sm italic tracking-wide text-zinc-600 md:mt-24" variants={item}>
+          Building because I&apos;m curious.
         </m.p>
 
         <m.div
