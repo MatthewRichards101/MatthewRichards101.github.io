@@ -17,6 +17,11 @@ const item: Variants = {
   },
 };
 
+const STAR_HORIZONTAL_SPREAD = 17;
+const STAR_VERTICAL_SPREAD = 29;
+const STAR_DELAY_INCREMENT = 0.8;
+const CURSOR_GLOW_OFFSET = 80;
+
 const storyMoments = [
   {
     era: 'Learning',
@@ -170,7 +175,7 @@ const socialLinks = [
   },
   {
     name: 'Email',
-    href: 'mailto:',
+    href: 'mailto:126410050+MatthewRichards101@users.noreply.github.com',
     accent: 'from-cyan-400/20 via-indigo-400/10 to-transparent',
   },
 ];
@@ -198,10 +203,10 @@ const constellationPaths = [
 
 const stars = Array.from({ length: 24 }, (_, index) => ({
   id: index,
-  left: `${(index * 17) % 100}%`,
-  top: `${(index * 29) % 100}%`,
+  left: `${(index * STAR_HORIZONTAL_SPREAD) % 100}%`,
+  top: `${(index * STAR_VERTICAL_SPREAD) % 100}%`,
   size: index % 3 === 0 ? 2 : 1,
-  delay: (index % 6) * 0.8,
+  delay: (index % 6) * STAR_DELAY_INCREMENT,
 }));
 
 function getNodePosition(id: string) {
@@ -653,7 +658,7 @@ export default function Home() {
 
       <div
         className="pointer-events-none fixed left-0 top-0 z-10 hidden h-80 w-80 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(125,211,252,0.16),rgba(129,140,248,0.08),transparent_68%)] blur-3xl md:block"
-        style={{ transform: `translate(${pointer.x - 80}px, ${pointer.y - 80}px)` }}
+        style={{ transform: `translate(${pointer.x - CURSOR_GLOW_OFFSET}px, ${pointer.y - CURSOR_GLOW_OFFSET}px)` }}
         aria-hidden="true"
       />
 
