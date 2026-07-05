@@ -26,14 +26,13 @@ export function Nav() {
       <div className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-white/10 bg-black/25 px-5 py-3 backdrop-blur-xl">
         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-300">MR</span>
         <div className="hidden items-center gap-6 text-xs uppercase tracking-[0.15em] text-zinc-400 md:flex">
-          <a href="#about" className="transition-colors duration-200 hover:text-white">About</a>
+          <a href="#about" className="transition-colors duration-200 hover:text-white">Story</a>
           <a href="#journey" className="transition-colors duration-200 hover:text-white">Journey</a>
-          <a href="#exploring" className="transition-colors duration-200 hover:text-white">Exploring</a>
-          <a href="#curiosity-map" className="transition-colors duration-200 hover:text-white">Curiosity Map</a>
-          <a href="#work" className="transition-colors duration-200 hover:text-white">Work</a>
+          <a href="#exploring" className="transition-colors duration-200 hover:text-white">Explorations</a>
+          <a href="#work" className="transition-colors duration-200 hover:text-white">Projects</a>
         </div>
         <a href="#contact" className="text-sm text-zinc-300 transition-colors duration-200 hover:text-white">
-          Let&apos;s talk →
+          Connect →
         </a>
       </div>
     </m.nav>
