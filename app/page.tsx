@@ -5,9 +5,11 @@ import {
   domAnimation,
   m,
   useReducedMotion,
+  useScroll,
+  useTransform,
   type Variants,
 } from 'framer-motion';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type MouseEvent } from 'react';
 
 const container: Variants = {
   hidden: {},
@@ -85,6 +87,88 @@ const stars = Array.from({ length: 24 }, (_, index) => ({
   delay: (index % 6) * STAR_DELAY_INCREMENT,
 }));
 
+// Slow, low-opacity particles that drift diagonally in the background,
+// distinct from the twinkling stars — pure CSS animation for performance.
+const driftParticles = Array.from({ length: 14 }, (_, index) => ({
+  id: index,
+  left: `${(index * 23 + 5) % 100}%`,
+  top: `${(index * 31 + 8) % 100}%`,
+  size: index % 4 === 0 ? 3 : 2,
+  duration: 16 + (index % 5) * 4,
+  driftX: `${((index % 3) - 1) * 26}px`,
+  driftY: `${((index % 4) - 2) * 22}px`,
+  hue:
+    index % 4 === 0
+      ? 'bg-cyan-300/50'
+      : index % 4 === 1
+        ? 'bg-violet-300/50'
+        : index % 4 === 2
+          ? 'bg-amber-200/40'
+          : 'bg-blue-300/50',
+}));
+
+// A journey rather than a résumé: the disciplines that have shaped the
+// way systems get built, in narrative order.
+const journeyMoments = [
+  {
+    id: 'learning',
+    label: 'Learning',
+    title: 'Chasing questions worth asking',
+    description:
+      'Curiosity as a starting discipline — pulling apart how things work before deciding how to build them better.',
+  },
+  {
+    id: 'manufacturing',
+    label: 'Manufacturing',
+    title: 'Where ideas meet tolerance',
+    description:
+      'Time on the floor with physical systems — learning that momentum comes from precision, not speed alone.',
+  },
+  {
+    id: 'cybersecurity',
+    label: 'Cybersecurity',
+    title: 'Thinking like the system under attack',
+    description:
+      'Adversarial thinking as a design tool — the best systems are the ones built assuming they will be tested.',
+  },
+  {
+    id: 'ai',
+    label: 'AI',
+    title: 'Teaching systems to notice patterns',
+    description:
+      'Exploring how intelligence gets embedded into products — not as a buzzword, but as a genuine capability.',
+  },
+  {
+    id: 'blockchain',
+    label: 'Blockchain',
+    title: 'Trust, encoded',
+    description:
+      'Investigating decentralized systems — what changes when trust is designed into the architecture itself.',
+  },
+  {
+    id: 'product-design',
+    label: 'Product Design',
+    title: 'Craftsmanship people can feel',
+    description:
+      'Bringing every thread together into experiences that feel considered, memorable, and quietly premium.',
+  },
+] as const;
+
+// Selected projects — data-driven so future work can be added as a
+// simple array entry without touching the layout below.
+const projects = [
+  {
+    id: 'cosmic-outpost',
+    name: 'Cosmic Outpost',
+    description:
+      'An exploratory space-themed product experience — designed as a small, self-contained system with its own visual language and momentum.',
+    tech: ['React', 'Vite', 'Tailwind CSS', 'Lovable'],
+    liveUrl: 'https://cosmicoutposts.lovable.app',
+    githubUrl: 'https://github.com/MatthewRichards101',
+    accent: 'from-cyan-400/25 via-violet-400/15 to-transparent',
+  },
+] as const;
+
 function getNodePosition(id: string) {
   return constellationNodes.find((node) => node.id === id);
 }
@@ -158,14 +242,20 @@ function HeroSystemMap({ reduceMotion }: { reduceMotion: boolean }) {
     >
       <div className="absolute inset-10 rounded-full border border-white/10" />
       <div className="absolute inset-20 rounded-full border border-cyan-300/10" />
+      <m.div
+        className="absolute inset-16 rounded-full border border-violet-300/10"
+        animate={reduceMotion ? undefined : { rotate: [0, -6, 0] }}
+        transition={reduceMotion ? undefined : { duration: 34, repeat: Infinity, ease: 'easeInOut' }}
+      />
       <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,rgba(96,165,250,0.16),transparent_58%)] blur-3xl" />
 
       <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full overflow-visible">
         <defs>
           <linearGradient id="constellation-line" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0%" stopColor="rgba(125,211,252,0.2)" />
-            <stop offset="50%" stopColor="rgba(129,140,248,0.55)" />
-            <stop offset="100%" stopColor="rgba(250,204,21,0.18)" />
+            <stop offset="45%" stopColor="rgba(129,140,248,0.55)" />
+            <stop offset="75%" stopColor="rgba(168,85,247,0.4)" />
+            <stop offset="100%" stopColor="rgba(250,204,21,0.22)" />
           </linearGradient>
         </defs>
 
@@ -199,7 +289,162 @@ function HeroSystemMap({ reduceMotion }: { reduceMotion: boolean }) {
             />
           );
         })}
+
+        {constellationNodes.map((node, index) => {
+          const fill =
+            index % 3 === 0
+              ? 'rgba(250,204,21,0.85)'
+              : index % 3 === 1
+                ? 'rgba(167,139,250,0.85)'
+                : 'rgba(125,211,252,0.85)';
+
+          return (
+            <m.circle
+              key={node.id}
+              cx={node.x}
+              cy={node.y}
+              r={node.size / 10 + 0.6}
+              fill={fill}
+              animate={reduceMotion ? undefined : { opacity: [0.5, 1, 0.5] }}
+              transition={
+                reduceMotion
+                  ? undefined
+                  : { duration: 4 + (index % 3), repeat: Infinity, delay: index * 0.3 }
+              }
+            />
+          );
+        })}
       </svg>
+    </m.div>
+  );
+}
+
+function SectionDivider() {
+  return (
+    <div className="relative h-24 overflow-hidden md:h-32" aria-hidden="true">
+      <m.div
+        className="blueprint-divider absolute inset-0 opacity-0"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 1.2 }}
+      />
+      <m.svg
+        viewBox="0 0 400 60"
+        className="absolute inset-x-0 top-1/2 mx-auto w-full max-w-3xl -translate-y-1/2 px-6"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: '-40px' }}
+        transition={{ duration: 0.6 }}
+      >
+        <m.path
+          d="M0 30 Q100 5 200 30 T400 30"
+          fill="none"
+          stroke="url(#constellation-line)"
+          strokeWidth="1"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: true, margin: '-40px' }}
+          transition={{ duration: 1.6, ease: [0.25, 0.4, 0.25, 1] }}
+        />
+        <circle cx="200" cy="30" r="2.5" fill="rgba(250,204,21,0.7)" />
+      </m.svg>
+    </div>
+  );
+}
+
+function ProjectCard({ project }: { project: (typeof projects)[number] }) {
+  const shouldReduceMotion = useReducedMotion();
+
+  const handleMove = (event: MouseEvent<HTMLDivElement>) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width) * 100;
+    const y = ((event.clientY - bounds.top) / bounds.height) * 100;
+    event.currentTarget.style.setProperty('--mx', `${x}%`);
+    event.currentTarget.style.setProperty('--my', `${y}%`);
+  };
+
+  return (
+    <m.div
+      className="spotlight-card premium-panel group relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/[0.04] p-6 text-left md:p-8"
+      variants={item}
+      onMouseMove={handleMove}
+      whileHover={shouldReduceMotion ? undefined : { y: -6 }}
+      transition={{ duration: 0.25 }}
+    >
+      <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${project.accent} opacity-70`} />
+
+      <div className="relative mb-6 flex h-40 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-black/30 md:h-52">
+        <m.svg
+          viewBox="0 0 200 120"
+          className="h-full w-full"
+          animate={shouldReduceMotion ? undefined : { scale: [1, 1.05, 1] }}
+          transition={shouldReduceMotion ? undefined : { duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <defs>
+            <radialGradient id={`${project.id}-glow`} cx="50%" cy="45%" r="65%">
+              <stop offset="0%" stopColor="rgba(125,211,252,0.35)" />
+              <stop offset="55%" stopColor="rgba(139,92,246,0.18)" />
+              <stop offset="100%" stopColor="transparent" />
+            </radialGradient>
+          </defs>
+          <rect width="200" height="120" fill={`url(#${project.id}-glow)`} />
+          {Array.from({ length: 5 }).map((_, i) => (
+            <circle
+              key={i}
+              cx={30 + i * 36}
+              cy={35 + ((i * 17) % 60)}
+              r={i % 2 === 0 ? 3 : 2}
+              fill={i % 2 === 0 ? 'rgba(250,204,21,0.7)' : 'rgba(125,211,252,0.7)'}
+            />
+          ))}
+          <path
+            d="M30 60 L66 45 L102 70 L138 40 L166 60"
+            fill="none"
+            stroke="rgba(167,139,250,0.5)"
+            strokeWidth="1.5"
+          />
+        </m.svg>
+      </div>
+
+      <div className="relative">
+        <h3 className="mb-2 text-xl font-semibold text-white md:text-2xl">{project.name}</h3>
+        <p className="mb-5 text-sm leading-relaxed text-zinc-400 md:text-base">{project.description}</p>
+
+        <div className="mb-6 flex flex-wrap gap-2">
+          {project.tech.map((tech, i) => (
+            <m.span
+              key={tech}
+              className="premium-tag rounded-full px-3 py-1 text-xs text-zinc-300"
+              initial={{ opacity: 0, y: 6 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05, duration: 0.4 }}
+            >
+              {tech}
+            </m.span>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap gap-3 opacity-90 transition-opacity duration-300 group-hover:opacity-100">
+          <a
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full bg-white px-4 py-2 text-xs font-medium uppercase tracking-[0.15em] text-black transition-transform duration-200 hover:scale-[1.03]"
+          >
+            Live Website →
+          </a>
+          <a
+            href={project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full border border-white/15 px-4 py-2 text-xs font-medium uppercase tracking-[0.15em] text-zinc-200 transition-colors duration-200 hover:border-white/30 hover:text-white"
+          >
+            GitHub
+          </a>
+        </div>
+      </div>
     </m.div>
   );
 }
@@ -210,6 +455,12 @@ export default function Home() {
   const [pointer, setPointer] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLElement>(null);
   const rafRef = useRef<number | null>(null);
+  const { scrollYProgress: heroScrollProgress } = useScroll({
+    target: heroRef,
+    offset: ['start start', 'end start'],
+  });
+  const heroParallaxY = useTransform(heroScrollProgress, [0, 1], [0, 60]);
+  const heroParallaxOpacity = useTransform(heroScrollProgress, [0, 0.8], [1, 0.3]);
 
   useEffect(() => {
     const el = heroRef.current;
@@ -279,6 +530,25 @@ export default function Home() {
               transition={shouldReduceMotion ? undefined : { duration: 5 + star.delay, repeat: Infinity, delay: star.delay }}
             />
           ))}
+
+          {!shouldReduceMotion &&
+            driftParticles.map((particle) => (
+              <span
+                key={particle.id}
+                className={`drift-particle absolute rounded-full ${particle.hue}`}
+                style={
+                  {
+                    left: particle.left,
+                    top: particle.top,
+                    width: particle.size,
+                    height: particle.size,
+                    animationDuration: `${particle.duration}s`,
+                    '--drift-x': particle.driftX,
+                    '--drift-y': particle.driftY,
+                  } as CSSProperties
+                }
+              />
+            ))}
         </div>
 
         {!shouldReduceMotion && (
@@ -304,9 +574,17 @@ export default function Home() {
         </m.nav>
 
         <section ref={heroRef} className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6">
-          <HeroSystemMap reduceMotion={!!shouldReduceMotion} />
+          <m.div style={shouldReduceMotion ? undefined : { y: heroParallaxY }}>
+            <HeroSystemMap reduceMotion={!!shouldReduceMotion} />
+          </m.div>
 
-          <m.div className="relative z-10 text-center" variants={container} initial={false} animate="visible">
+          <m.div
+            className="relative z-10 text-center"
+            variants={container}
+            initial={false}
+            animate="visible"
+            style={shouldReduceMotion ? undefined : { opacity: heroParallaxOpacity, y: heroParallaxY }}
+          >
             <m.p className="mb-10 text-xs font-medium uppercase tracking-[0.35em] text-zinc-500" variants={item}>
               Matthew Richards
             </m.p>
@@ -333,6 +611,92 @@ export default function Home() {
             </m.p>
           </m.div>
         </section>
+
+        <SectionDivider />
+
+        <section id="journey" className="relative px-6 py-32 md:py-40">
+          <div className="mx-auto max-w-4xl">
+            <m.div
+              className="mb-16 text-center md:mb-24"
+              variants={container}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+            >
+              <m.p className="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-zinc-500" variants={item}>
+                The Journey
+              </m.p>
+              <m.h2 className="text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl" variants={item}>
+                A Path Shaped by
+                <br />
+                <span className="bg-gradient-to-r from-cyan-200 via-violet-200 to-amber-100 bg-clip-text text-transparent">
+                  <Keyword delay={0.1}>Curiosity</Keyword>
+                </span>
+              </m.h2>
+            </m.div>
+
+            <div className="relative pl-10 md:pl-14">
+              <div className="journey-rail absolute left-3 top-1 h-[calc(100%-0.5rem)] w-px md:left-5" aria-hidden="true" />
+
+              <m.div variants={container} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-100px' }}>
+                {journeyMoments.map((moment) => (
+                  <m.div key={moment.id} className="relative mb-14 last:mb-0" variants={item}>
+                    <span
+                      className="journey-node absolute -left-10 top-1.5 h-3 w-3 rounded-full bg-cyan-300 md:-left-14"
+                      aria-hidden="true"
+                    />
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-zinc-500">
+                      {moment.label}
+                    </p>
+                    <h3 className="mb-2 text-xl font-semibold text-white md:text-2xl">{moment.title}</h3>
+                    <p className="max-w-2xl text-sm leading-relaxed text-zinc-400 md:text-base">
+                      {moment.description}
+                    </p>
+                  </m.div>
+                ))}
+              </m.div>
+            </div>
+          </div>
+        </section>
+
+        <SectionDivider />
+
+        <section id="projects" className="relative px-6 py-32 md:py-40">
+          <div className="mx-auto max-w-5xl">
+            <m.div
+              className="mb-16 text-center md:mb-20"
+              variants={container}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+            >
+              <m.p className="mb-4 text-xs font-medium uppercase tracking-[0.35em] text-zinc-500" variants={item}>
+                Selected Work
+              </m.p>
+              <m.h2 className="text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl" variants={item}>
+                Systems Built with
+                <br />
+                <span className="bg-gradient-to-r from-white via-cyan-100 to-indigo-100 bg-clip-text text-transparent">
+                  <Keyword delay={0.15}>Technology</Keyword>
+                </span>
+              </m.h2>
+            </m.div>
+
+            <m.div
+              className="grid gap-6 md:grid-cols-2"
+              variants={container}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+            >
+              {projects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            </m.div>
+          </div>
+        </section>
+
+        <SectionDivider />
 
         <section id="contact" className="relative border-t border-white/6 px-6 py-44">
           <div className="mx-auto max-w-4xl text-center">
