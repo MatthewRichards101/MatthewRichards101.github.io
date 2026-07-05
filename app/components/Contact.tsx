@@ -32,6 +32,72 @@ const socialLinks = [
   },
 ] as const;
 
+const footerNodes = [
+  { x: 20, y: 30 },
+  { x: 50, y: 15 },
+  { x: 80, y: 32 },
+  { x: 65, y: 60 },
+  { x: 35, y: 62 },
+];
+
+const footerLines: ReadonlyArray<readonly [number, number]> = [
+  [0, 1],
+  [1, 2],
+  [2, 3],
+  [3, 4],
+  [4, 0],
+  [1, 3],
+];
+
+// The one footer surprise: a tiny constellation quietly reconnects
+// itself, then two lines reveal in sequence — a small echo of the
+// Curiosity Map, saved for the very last moment of the page.
+function FooterConstellation() {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <svg
+      viewBox="0 0 100 70"
+      className="mx-auto mb-8 h-16 w-40 overflow-visible"
+      aria-hidden="true"
+    >
+      {footerLines.map(([startIdx, endIdx], i) => {
+        const start = footerNodes[startIdx];
+        const end = footerNodes[endIdx];
+        return (
+          <m.line
+            key={i}
+            x1={start.x}
+            y1={start.y}
+            x2={end.x}
+            y2={end.y}
+            stroke="rgba(139,92,246,0.45)"
+            strokeWidth="0.6"
+            strokeLinecap="round"
+            initial={shouldReduceMotion ? undefined : { pathLength: 0, opacity: 0 }}
+            whileInView={shouldReduceMotion ? undefined : { pathLength: 1, opacity: 0.7 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.15 * i, ease: 'easeOut' }}
+          />
+        );
+      })}
+      {footerNodes.map((node, i) => (
+        <m.circle
+          key={i}
+          cx={node.x}
+          cy={node.y}
+          r="2.2"
+          fill="rgba(250,204,21,0.85)"
+          initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 0 }}
+          whileInView={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.1 * i }}
+        />
+      ))}
+    </svg>
+  );
+}
+
 export function Contact() {
   const shouldReduceMotion = useReducedMotion();
 
@@ -39,7 +105,25 @@ export function Contact() {
     <section id="contact" className="relative border-t border-white/6 px-6 py-44">
       <div className="mx-auto max-w-4xl text-center">
         <m.div variants={container} initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }}>
-          <m.h2 className="mb-6 text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl" variants={item}>
+          <FooterConstellation />
+
+          <m.p
+            className="mb-4 text-lg font-light tracking-wide text-zinc-400 md:text-xl"
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.9 }}
+          >
+            What are you curious about?
+          </m.p>
+
+          <m.h2
+            className="mb-6 text-4xl font-bold leading-[1.05] tracking-tight md:text-6xl"
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 1.6 }}
+          >
             Let&apos;s Build
             <br />
             <span className="bg-gradient-to-r from-white via-cyan-100 to-indigo-100 bg-clip-text text-transparent">
