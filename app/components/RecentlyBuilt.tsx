@@ -27,7 +27,7 @@ const recentBuilds: ReadonlyArray<{
 function BuildCard({ project }: { project: (typeof recentBuilds)[number] }) {
   const shouldReduceMotion = useReducedMotion();
 
-  const handleMove = (event: MouseEvent<HTMLDivElement>) => {
+  const handleMove = (event: MouseEvent<HTMLAnchorElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
     const x = ((event.clientX - bounds.left) / bounds.width) * 100;
     const y = ((event.clientY - bounds.top) / bounds.height) * 100;
