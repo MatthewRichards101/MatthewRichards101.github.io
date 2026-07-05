@@ -170,7 +170,7 @@ const socialLinks = [
   },
   {
     name: 'YouTube',
-    href: 'https://www.youtube.com/results?search_query=MatthewRichards101',
+    href: 'https://youtube.com/@mcc_444?si=Q1DhJes0191ekxwU',
     accent: 'from-amber-300/20 via-orange-400/10 to-transparent',
   },
   {
