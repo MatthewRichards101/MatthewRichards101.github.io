@@ -116,6 +116,7 @@ function getNode(id: string) {
 export function CuriosityMap() {
   const shouldReduceMotion = useReducedMotion();
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [focusMode, setFocusMode] = useState(false);
   const detailId = useId();
 
   const selected = selectedId ? getNode(selectedId) : null;
@@ -127,9 +128,34 @@ export function CuriosityMap() {
     );
   };
 
+  // The site's one deliberate "hero moment": the first time a visitor
+  // selects a star, the rest of the page dims, every connection lights
+  // up at once, and the map itself grows for a few unforgettable
+  // seconds before quietly returning to normal.
+  const handleSelect = (id: string) => {
+    setSelectedId((current) => (current === id ? null : id));
+    if (!shouldReduceMotion) {
+      setFocusMode(true);
+      window.setTimeout(() => setFocusMode(false), 5000);
+    }
+  };
+
   return (
     <section id="curiosity-map" className="relative px-6 py-32 md:py-40">
-      <div className="mx-auto max-w-4xl">
+      <AnimatePresence>
+        {focusMode && (
+          <m.div
+            className="fixed inset-0 z-40 bg-black/92 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.9 }}
+            aria-hidden="true"
+          />
+        )}
+      </AnimatePresence>
+
+      <div className={`relative mx-auto max-w-4xl ${focusMode ? 'z-50' : ''}`}>
         <m.div
           className="mb-14 text-center md:mb-16"
           variants={container}
@@ -155,6 +181,11 @@ export function CuriosityMap() {
           whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
         >
+          <m.div
+            className="absolute inset-0"
+            animate={focusMode ? { scale: 1.18 } : { scale: 1 }}
+            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          >
           <svg viewBox="0 0 100 100" className="absolute inset-0 h-full w-full overflow-visible" aria-hidden="true">
             <defs>
               <linearGradient id="map-line" x1="0" y1="0" x2="1" y2="1">
@@ -177,11 +208,21 @@ export function CuriosityMap() {
                   x2={end.x}
                   y2={end.y}
                   stroke="url(#map-line)"
-                  strokeWidth={active ? 0.6 : 0.3}
+                  strokeWidth={active || focusMode ? 0.6 : 0.3}
                   strokeLinecap="round"
-                  animate={{ opacity: selectedId ? (active ? 0.9 : 0.15) : shouldReduceMotion ? 0.4 : [0.25, 0.5, 0.25] }}
+                  animate={{
+                    opacity: focusMode
+                      ? 0.95
+                      : selectedId
+                        ? active
+                          ? 0.9
+                          : 0.15
+                        : shouldReduceMotion
+                          ? 0.4
+                          : [0.25, 0.5, 0.25],
+                  }}
                   transition={
-                    selectedId
+                    focusMode || selectedId
                       ? { duration: 0.4 }
                       : shouldReduceMotion
                         ? undefined
@@ -202,7 +243,7 @@ export function CuriosityMap() {
                 type="button"
                 aria-pressed={active}
                 aria-controls={detailId}
-                onClick={() => setSelectedId((current) => (current === node.id ? null : node.id))}
+                onClick={() => handleSelect(node.id)}
                 className="group absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2 rounded-full p-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70"
                 style={{ left: `${node.x}%`, top: `${node.y}%` }}
               >
@@ -212,7 +253,8 @@ export function CuriosityMap() {
                     width: active ? 16 : 11,
                     height: active ? 16 : 11,
                     backgroundColor: node.color,
-                    boxShadow: active || connected ? `0 0 18px ${node.color}` : '0 0 8px rgba(255,255,255,0.15)',
+                    boxShadow:
+                      active || connected || focusMode ? `0 0 18px ${node.color}` : '0 0 8px rgba(255,255,255,0.15)',
                   }}
                   animate={shouldReduceMotion ? undefined : { scale: active ? [1, 1.15, 1] : 1 }}
                   transition={{ duration: 1.6, repeat: active ? Infinity : 0 }}
@@ -227,6 +269,7 @@ export function CuriosityMap() {
               </button>
             );
           })}
+          </m.div>
         </m.div>
 
         <div id={detailId} className="mx-auto mt-10 min-h-[9rem] max-w-lg">
