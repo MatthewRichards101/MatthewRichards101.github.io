@@ -30,45 +30,19 @@ function FlagshipVisual() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-white/10 bg-black/40 md:aspect-[16/9]">
-      <m.svg
-        viewBox="0 0 400 225"
-        className="h-full w-full"
-        animate={shouldReduceMotion ? undefined : { scale: [1, 1.04, 1] }}
-        transition={shouldReduceMotion ? undefined : { duration: 16, repeat: Infinity, ease: 'easeInOut' }}
-      >
-        <defs>
-          <radialGradient id="flagship-glow" cx="50%" cy="40%" r="70%">
-            <stop offset="0%" stopColor="rgba(125,211,252,0.35)" />
-            <stop offset="45%" stopColor="rgba(139,92,246,0.22)" />
-            <stop offset="100%" stopColor="transparent" />
-          </radialGradient>
-          <linearGradient id="flagship-line" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="rgba(250,204,21,0.6)" />
-            <stop offset="100%" stopColor="rgba(125,211,252,0.6)" />
-          </linearGradient>
-        </defs>
-        <rect width="400" height="225" fill="url(#flagship-glow)" />
-        {Array.from({ length: 9 }).map((_, i) => (
-          <m.circle
-            key={i}
-            cx={30 + i * 42}
-            cy={40 + ((i * 27) % 150)}
-            r={i % 3 === 0 ? 3.5 : 2}
-            fill={i % 3 === 0 ? 'rgba(250,204,21,0.75)' : 'rgba(125,211,252,0.7)'}
-            animate={shouldReduceMotion ? undefined : { opacity: [0.4, 1, 0.4] }}
-            transition={shouldReduceMotion ? undefined : { duration: 4 + (i % 3), repeat: Infinity, delay: i * 0.25 }}
-          />
-        ))}
-        <path
-          d="M20 120 L80 90 L140 140 L200 70 L260 130 L320 95 L380 120"
-          fill="none"
-          stroke="url(#flagship-line)"
-          strokeWidth="1.5"
-        />
-      </m.svg>
+    <div className="group/visual relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-white/10 bg-black/40 md:aspect-[16/9]">
+      <m.img
+        src="/images/cosmic-outpost.jpg"
+        alt="Live preview of the Cosmic Outpost site"
+        className="h-full w-full object-cover object-top"
+        loading="lazy"
+        animate={shouldReduceMotion ? undefined : { scale: [1, 1.05, 1] }}
+        transition={shouldReduceMotion ? undefined : { duration: 18, repeat: Infinity, ease: 'easeInOut' }}
+        whileHover={shouldReduceMotion ? undefined : { scale: 1.08 }}
+      />
 
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan-400/10 via-transparent to-violet-400/10 opacity-0 transition-opacity duration-500 group-hover/visual:opacity-100" />
     </div>
   );
 }
