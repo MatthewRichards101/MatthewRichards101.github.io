@@ -93,7 +93,7 @@ function Keyword({ children, delay = 0 }: { children: string; delay?: number }) 
   return (
     <m.span
       className="inline-flex premium-keyword"
-      initial={{ opacity: 0, y: 16 }}
+      initial={false}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.8, ease: [0.25, 0.4, 0.25, 1] }}
     >
@@ -306,7 +306,7 @@ export default function Home() {
         <section ref={heroRef} className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6">
           <HeroSystemMap reduceMotion={!!shouldReduceMotion} />
 
-          <m.div className="relative z-10 text-center" variants={container} initial="hidden" animate="visible">
+          <m.div className="relative z-10 text-center" variants={container} initial={false} animate="visible">
             <m.p className="mb-10 text-xs font-medium uppercase tracking-[0.35em] text-zinc-500" variants={item}>
               Matthew Richards
             </m.p>
