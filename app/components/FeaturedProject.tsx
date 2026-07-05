@@ -13,8 +13,6 @@ const flagshipProject = {
     'A self-contained space-themed product experience, designed the way a small system should be \u2014 with its own visual language, its own momentum, and no wasted motion. Built to feel discovered, not browsed.',
   tech: ['React', 'Vite', 'Tailwind CSS', 'Lovable'],
   liveUrl: 'https://cosmicoutposts.lovable.app',
-  githubUrl: '#',
-  githubAvailable: false,
 } as const;
 
 // Future work fits here as simple data entries — the layout below
@@ -128,23 +126,6 @@ function FlagshipCard() {
             >
               Visit Experience →
             </a>
-            {flagshipProject.githubAvailable ? (
-              <a
-                href={flagshipProject.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full border border-white/15 px-5 py-2.5 text-xs font-medium uppercase tracking-[0.15em] text-zinc-200 transition-colors duration-200 hover:border-white/30 hover:text-white"
-              >
-                GitHub
-              </a>
-            ) : (
-              <span
-                className="cursor-not-allowed rounded-full border border-white/10 px-5 py-2.5 text-xs font-medium uppercase tracking-[0.15em] text-zinc-600"
-                title="Repository coming soon"
-              >
-                GitHub — Coming Soon
-              </span>
-            )}
           </div>
         </div>
       </div>
