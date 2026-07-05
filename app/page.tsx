@@ -87,7 +87,7 @@ const timeline = [
     role: 'Quality & Operations',
     skills: ['Continuous Improvement', 'Attention to Detail', 'Process Management'],
     description:
-      'Worked within pharmaceutical manufacturing standards where precision is non-negotiable. Quality became a mindset, not a department \u2014 and that perspective has shaped everything since.',
+      'Worked within pharmaceutical manufacturing standards where precision is non-negotiable. Quality became a mindset, not a department — and that perspective has shaped everything since.',
   },
   {
     company: 'VXI',
@@ -178,7 +178,7 @@ export default function Home() {
             href="#contact"
             className="text-sm text-zinc-400 hover:text-white transition-colors duration-200"
           >
-            Let&rsquo;s talk &rarr;
+            Let's talk →
           </a>
         </div>
       </motion.nav>
@@ -273,19 +273,19 @@ export default function Home() {
               variants={item}
             >
               <p>
-                I&rsquo;m someone who is genuinely obsessed with understanding how things work — not
+                I'm someone who is genuinely obsessed with understanding how things work — not
                 just the surface, but the systems underneath. The reasons behind decisions. The
                 patterns that repeat across industries most people treat as unrelated.
               </p>
               <p>
                 My background sits at an unusual intersection: manufacturing quality, emerging
-                technology, and product thinking. I&rsquo;ve spent time inside pharmaceutical and
+                technology, and product thinking. I've spent time inside pharmaceutical and
                 medical device environments where the cost of imprecision is measured in more than
                 dollars. That shapes how I approach everything I build.
               </p>
               <p>
-                Right now I&rsquo;m applying that same rigour to AI, cybersecurity, blockchain, and
-                web experiences — not because they&rsquo;re trending, but because they&rsquo;re the
+                Right now I'm applying that same rigour to AI, cybersecurity, blockchain, and
+                web experiences — not because they're trending, but because they're the
                 next frontier of systems worth understanding.
               </p>
             </motion.div>
@@ -499,7 +499,7 @@ export default function Home() {
               className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-6"
               variants={item}
             >
-              Let&rsquo;s Build
+              Let's Build
               <br />
               <span className="text-zinc-600">Something Together.</span>
             </motion.h2>
@@ -507,8 +507,8 @@ export default function Home() {
               className="text-zinc-400 text-lg mb-14 leading-relaxed max-w-xl mx-auto"
               variants={item}
             >
-              If you&rsquo;re working on something that requires genuine curiosity and careful
-              thinking, I&rsquo;d like to hear about it.
+              If you're working on something that requires genuine curiosity and careful
+              thinking, I'd like to hear about it.
             </motion.p>
             <motion.div variants={item}>
               <motion.a
@@ -519,7 +519,7 @@ export default function Home() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Get in touch &rarr;
+                Get in touch →
               </motion.a>
             </motion.div>
           </motion.div>
